@@ -1,5 +1,7 @@
 const Renderer = function() {
 
+    const postsElement = $("#posts")
+
     const createPost = function(post) {
         const postElement = $(`<div data-id=${post.id} class=post>
             <h3 class=post-text>${post.text}</h3>
@@ -9,21 +11,23 @@ const Renderer = function() {
               <button class=comment>Add Comment</button>
             </div>
             </div>`)
-        $("#posts").append(postElement)
+        postsElement.append(postElement)
     }
 
-    const createComment = function(post, comment) {
-        const postCommentElement = $(`<div data-id=${comment.id} class=comments>${comment.text}<span class=delete-comment>X</span></div>`)
-        $(`*[data-id="${post.id}"]`).append(postCommentElement)
+    const createComment = function(postId, comment) {
+        const postCommentElement = $(`<div data-id=${comment.id} class=comments>
+            ${comment.text}<span class=delete-comment>X</span></div>`)
+        $(`*[data-id="${postId}"]`).append(postCommentElement)
     }
 
     const renderPosts = function(posts) {
-        $("#posts").empty()
+        postsElement.empty()
         for (const post of posts) {
             createPost(post)
+            const postId = post.id
             const comments = post.comments
             for (const comment of comments) {
-                createComment(post, comment)
+                createComment(postId, comment)
             }
         }
     }
